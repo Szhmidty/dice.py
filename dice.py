@@ -24,7 +24,7 @@ def pascal(row:int, col:int) -> int:
 def dice_roll_probability_at_most_pascal(n: int, N: int, roll:int) -> float:
     roll = roll - n
     pos = roll // N # which stage of adding/substracting simplex volumes we've reached
-                    # strictly speaking not necessary, we can simply define pascal/simplica_number
+                    # strictly speaking not necessary, we can simply define pascal/simplical_number
                     # as being 0 for negative/out of scope inputs, but this saves us from having to
                     # even call the function for those inputs/save them to the cache
     s = 0
@@ -39,6 +39,8 @@ def dice_roll_probability_at_most_simplical(n: int, N: int, roll:int) -> float:
     for it in range(pos + 1):
         s += ((-1)**it)*simplical_number(n-it,it+1)*simplical_number(n,roll +1 - it*N)
     return s/N**n
+
+
 if __name__ == "__main__":
     print('\n')
     simplical_time = timeit.timeit(
