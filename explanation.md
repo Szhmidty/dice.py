@@ -8,7 +8,7 @@ We can imagine the lowest possible roll (1,1,1) as being contained by a unit cub
 
 For the next lowest roll, we can increment any of the dice in the previous lowest roll by 1, giving us (2,1,1), (1,2,1), and (1,1,2). We plop unit cubes of those rolls down at those coordinates. 
 
-![image-20220630185346405](.\images\image2.png)
+![image-20220630185346405](./images/image2.png)
 
 For the next lowest roll, we do the same thing: we take the previous set of lowest rolls and increment any particular die by one. We will have some repetition this time around; we're only interested in the unique rolls. We get (3,1,1), (2,2,1), (2,1,2), (1,3,1),(1,2,2) and (1,1,3)
 
