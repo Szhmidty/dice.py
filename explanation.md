@@ -50,7 +50,7 @@ So remove that volume and proceed to another face, in this case the outer face i
 
 Now all the remains is the protrusion in the X direction, however with this one we don't need to worry about constraints at all, we just need to calculate its volume:
 
-![image-20220704115415294](C:\Users\Jacob\Downloads\dice/images/image11.png)
+![image-20220704115415294](./images/image11.png)
 
 Until we're finally left with the portion of the simplex purely contained within the dimensions of our dice.
 
