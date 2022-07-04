@@ -4,7 +4,7 @@ The first thing to do is to imagine our dice have infinite sides, and each side 
 
 We can imagine the lowest possible roll (1,1,1) as being contained by a unit cube:
 
-![image-20220630185208306](.\images\image1.png)
+![image-20220630185208306](./images/image1.png)
 
 For the next lowest roll, we can increment any of the dice in the previous lowest roll by 1, giving us (2,1,1), (1,2,1), and (1,1,2). We plop unit cubes of those rolls down at those coordinates. 
 
@@ -12,7 +12,7 @@ For the next lowest roll, we can increment any of the dice in the previous lowes
 
 For the next lowest roll, we do the same thing: we take the previous set of lowest rolls and increment any particular die by one. We will have some repetition this time around; we're only interested in the unique rolls. We get (3,1,1), (2,2,1), (2,1,2), (1,3,1),(1,2,2) and (1,1,3)
 
-![image-20220630190400640](.\images\image3.png)
+![image-20220630190400640](./images/image3.png)
 
 Intuitively, it's easy to see the volume containing these rolls is an n-simplical number, in this case a 3-simplical number (where a 2-simplical number would be a triangular number). We can calculate the volume containing a particular roll by calculating the n-simplical number associated with it. There are a number of ways to calculate n-simplical numbers, we'll use this definition in python:
 $$
@@ -22,39 +22,39 @@ For our purposes, we define negative inputs to return 0. We also have to make an
 
 So we can find the volume of the simplex containing a particular roll (and all the rolls smaller than it), but the obvious problem is that rolls coming from a true set of 3 dice are constrained to a particular rectangular prism. Rolling 3d6, we can roll an 9, but the simplex for a score of 9 pokes outside the true volume of our possibility space:
 
-![image-20220630192844847](.\images\image4.png)
+![image-20220630192844847](./images/image4.png)
 
 This only gets worse as we look at larger and larger rolls:
 
-![image-20220630192958674](.\images\image5.png)
+![image-20220630192958674](./images/image5.png)
 
-![image-20220630193025867](.\images\image6.png)
+![image-20220630193025867](./images/image6.png)
 
 But these protrusions are themselves simplexes! So we can just subtract their volumes off. However, this gets hairy. As we continue to look at larger rolls, the protrusions will eventually overlap. Looking at a roll of 15:
 
-![image-20220630194023451](.\images\image7.png)
+![image-20220630194023451](./images/image7.png)
 
 I'm running out of good high contrast colours. The protrusions in each direction begin to overlap, and so simply subtracting the protrusions off the total volume no longer works. We could add those overlaps back, which is essentially what I did in my previous attempt at this problem. However, this gets ugly fast if the dice aren't all the same; we have a better way in general. 
 
 We think of the dice as constraining the rolls to particular sections of the axes. We can work with the constraints one at a time. So first we generate the full simplex for a particular roll (in this case rolling a 16 from 1d5 + 1d6 + 1d7):
 
-![image-20220704114446996](.\images\image8.png)
+![image-20220704114446996](./images/image8.png)
 
 The trick is to recognize that the bits we want to cut off are themselves successively less constrained simplexes. We start by projecting the top face upward, and removing everything that gets caught in that projection. Since we are projecting in the Z direction, we no longer have to worry about constraints in that direction, only the remaining constraints in the X and Y directions:
 
-![image-20220704114723431](.\images\image9.png)
+![image-20220704114723431](./images/image9.png)
 
 So remove that volume and proceed to another face, in this case the outer face in the Y direction. We again don't need to worry about constraints in the Y direction, but additionally we don't need to worry about constraints in the Z direction either: we took care of the volume directly on top of the prism, so there's no overlap to worry about. We do still need to worry about constraints in the X direction, however. 
 
-![image-20220704115203149](.\images\image10.png)
+![image-20220704115203149](./images/image10.png)
 
 Now all the remains is the protrusion in the X direction, however with this one we don't need to worry about constraints at all, we just need to calculate its volume:
 
-![image-20220704115415294](C:\Users\Jacob\Downloads\dice\images\image11.png)
+![image-20220704115415294](C:\Users\Jacob\Downloads\dice/images/image11.png)
 
 Until we're finally left with the portion of the simplex purely contained within the dimensions of our dice.
 
-![image-20220704115525978](.\images\image12.png)
+![image-20220704115525978](./images/image12.png)
 
 At which point we can find the probability of all rolls up to that point by dividing the volume of the truncated simplex by the volume of the prism. 
 
