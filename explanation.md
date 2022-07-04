@@ -15,9 +15,7 @@ For the next lowest roll, we do the same thing: we take the previous set of lowe
 ![image-20220630190400640](./images/image3.png)
 
 Intuitively, it's easy to see the volume containing these rolls is an n-simplical number, in this case a 3-simplical number (where a 2-simplical number would be a triangular number). We can calculate the volume containing a particular roll by calculating the n-simplical number associated with it. There are a number of ways to calculate n-simplical numbers, we'll use this definition in python:
-$$
-S(n,x) = \prod_{i=0}^{n-1}\frac{(x + i)}{i + 1}
-$$
+$$S(n,x) = \prod_{i=0}^{n-1}\frac{(x + i)}{i + 1}$$
 For our purposes, we define negative inputs to return 0. We also have to make an adjustment for the number of dice: for n dice and a given roll, we calculated S(n, roll + 1 - n).D
 
 So we can find the volume of the simplex containing a particular roll (and all the rolls smaller than it), but the obvious problem is that rolls coming from a true set of 3 dice are constrained to a particular rectangular prism. Rolling 3d6, we can roll an 9, but the simplex for a score of 9 pokes outside the true volume of our possibility space:
@@ -102,12 +100,10 @@ For implementation, you're going to want to be able to cache the values of this 
 * If you're looking at a case where all dice are the same, as was originally asked about, the above approach is unnecessarily slow: too many function calls, each with it's own hash to access the cache. There's a faster way I've detailed here. 
 
 * If you want the entire roll distribution, you probably want to change up the above approach a bit. There's another equation for simplical numbers we can use:
-  $$
-  \begin{align}
+  $$\begin{align}
   S(n,x) &= \sum_{i = 1}^{x} S(n-1, i)\\
   S(0,x) &= 1
-  \end{align}
-  $$
+  \end{align}$$
   This is, effectively, successive cumulative sums. This would be overall slower if you wanted just one value, but if you're doing the entire distribution then finding the cumulative some for the highest roll involves finding the cumulative sum for every roll. I suspect it would be much faster to do it this way, keeping the results of each cumulative sum iteration in the cache for access later. 
 
 * All of this is slower than convolution, unless you're writing in C or Rust or Fortran and can really optimize. Especially if you're looking at the whole distribution, just use convolution. 
