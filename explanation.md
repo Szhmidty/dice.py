@@ -100,7 +100,7 @@ For implementation, you're going to want to be able to cache the values of this 
 * If you're looking at a case where all dice are the same, as was originally asked about, the above approach is unnecessarily slow: too many function calls, each with it's own hash to access the cache. There's a faster way I've detailed here. 
 
 * If you want the entire roll distribution, you probably want to change up the above approach a bit. There's another equation for simplical numbers we can use:
-  $$\begin{align} S(n,x) &= \sum_{i = 1}^{x} S(n-1, i)\\ S(0,x) &= 1\end{align}$$
+  $$S(n,x) = \sum_{i = 1}^{x} S(n-1, i),\quad S(0,x) = 1$$
   This is, effectively, successive cumulative sums. This would be overall slower if you wanted just one value, but if you're doing the entire distribution then finding the cumulative some for the highest roll involves finding the cumulative sum for every roll. I suspect it would be much faster to do it this way, keeping the results of each cumulative sum iteration in the cache for access later. 
 
 * All of this is slower than convolution, unless you're writing in C or Rust or Fortran and can really optimize. Especially if you're looking at the whole distribution, just use convolution. 
